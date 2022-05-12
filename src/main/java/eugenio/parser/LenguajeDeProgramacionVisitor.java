@@ -17,11 +17,32 @@ public interface LenguajeDeProgramacionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrograma(LenguajeDeProgramacionParser.ProgramaContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code encabezadoclase}
+	 * labeled alternative in {@link LenguajeDeProgramacionParser#clase}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEncabezadoclase(LenguajeDeProgramacionParser.EncabezadoclaseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LenguajeDeProgramacionParser#encabezado}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitEncabezado(LenguajeDeProgramacionParser.EncabezadoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code cerrarmetodo}
+	 * labeled alternative in {@link LenguajeDeProgramacionParser#cierremetodo}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCerrarmetodo(LenguajeDeProgramacionParser.CerrarmetodoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code cerrarclase}
+	 * labeled alternative in {@link LenguajeDeProgramacionParser#cierreclase}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCerrarclase(LenguajeDeProgramacionParser.CerrarclaseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LenguajeDeProgramacionParser#tipodereturn}.
 	 * @param ctx the parse tree
@@ -41,6 +62,20 @@ public interface LenguajeDeProgramacionVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitImpresion(LenguajeDeProgramacionParser.ImpresionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code imprimirexpr}
+	 * labeled alternative in {@link LenguajeDeProgramacionParser#impresiones}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImprimirexpr(LenguajeDeProgramacionParser.ImprimirexprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code imprimirstring}
+	 * labeled alternative in {@link LenguajeDeProgramacionParser#impresiones}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImprimirstring(LenguajeDeProgramacionParser.ImprimirstringContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code declaracion}
 	 * labeled alternative in {@link LenguajeDeProgramacionParser#declarar}.
@@ -152,6 +187,20 @@ public interface LenguajeDeProgramacionVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParentesis(LenguajeDeProgramacionParser.ParentesisContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code incrementar}
+	 * labeled alternative in {@link LenguajeDeProgramacionParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIncrementar(LenguajeDeProgramacionParser.IncrementarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code decrementar}
+	 * labeled alternative in {@link LenguajeDeProgramacionParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecrementar(LenguajeDeProgramacionParser.DecrementarContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code sumRes}
 	 * labeled alternative in {@link LenguajeDeProgramacionParser#expr}.

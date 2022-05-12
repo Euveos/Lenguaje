@@ -12,6 +12,36 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
 
     Nodo memoria = new Nodo(null);
 
+    public String nombreClase;
+    public String traduccion="";
+
+    @Override public String visitEncabezadoclase(LenguajeDeProgramacionParser.EncabezadoclaseContext ctx) {
+        nombreClase=ctx.ID().getText();
+        traduccion+=".class public "+nombreClase+"\n" +
+                ".super java/lang/Object\n";
+        return null;
+    }
+
+    @Override public String visitEncabezado(LenguajeDeProgramacionParser.EncabezadoContext ctx) {
+        traduccion+=".method public static main([Ljava/lang/String;)V\n" +
+                "\t.limit stack 10\n" +
+                "\t.limit locals 10\n";
+        return null;
+    }
+
+    @Override public String visitCerrarmetodo(LenguajeDeProgramacionParser.CerrarmetodoContext ctx) {
+        traduccion+="return\n";
+        traduccion+=".end method";
+        return null;
+    }
+
+    @Override public String visitCerrarclase(LenguajeDeProgramacionParser.CerrarclaseContext ctx) {
+        LenguajeController controller = new LenguajeController();
+        controller.setNombreClase(nombreClase);
+        controller.setSalida(traduccion);
+        return null;
+    }
+
     @Override public Integer visitDeclaracion(LenguajeDeProgramacionParser.DeclaracionContext ctx) {
         String id = ctx.ID().getText();
         int linea = ctx.ID().getSymbol().getLine();
@@ -47,11 +77,19 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
 
 
     @Override public Integer visitImpresion(LenguajeDeProgramacionParser.ImpresionContext ctx) {
-        Integer valor = (int)visit(ctx.expr());
+        String valor = visit(ctx.impresiones()).toString();
         LenguajeController controller = new LenguajeController();
         controller.concatenar(valor.toString());
         return 0;
     }
+
+    @Override public Integer visitImprimirexpr(LenguajeDeProgramacionParser.ImprimirexprContext ctx) {
+        int expresion = (int)visit(ctx.expr());
+        return expresion; }
+
+    @Override public String visitImprimirstring(LenguajeDeProgramacionParser.ImprimirstringContext ctx) {
+        return ctx.STRING().getText(); }
+
 
     @Override public Integer visitInt(LenguajeDeProgramacionParser.IntContext ctx) {
         return Integer.valueOf(ctx.INT().getText());
@@ -92,6 +130,30 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
             return izq/der;
         }
     }
+
+    @Override public Integer visitIncrementar(LenguajeDeProgramacionParser.IncrementarContext ctx) {
+        String id = ctx.ID().getText();
+        int linea = ctx.ID().getSymbol().getLine();
+        if(!memoria.existe(id)){
+            throw new NullPointerException("Variable \""+id+"\" no declarada. Linea: "+linea+".");
+        }
+        int valor=memoria.obtener(id);
+        memoria.ingresar(id,valor+1);
+        return null;
+    }
+
+    @Override public Integer visitDecrementar(LenguajeDeProgramacionParser.DecrementarContext ctx) {
+        String id = ctx.ID().getText();
+        int linea = ctx.ID().getSymbol().getLine();
+        if(!memoria.existe(id)){
+            throw new NullPointerException("Variable \""+id+"\" no declarada. Linea: "+linea+".");
+        }
+        int valor=memoria.obtener(id);
+        memoria.ingresar(id,valor-1);
+        return null;
+    }
+
+
 
     @Override public Integer visitParentesis(LenguajeDeProgramacionParser.ParentesisContext ctx) {
         return (int)visit(ctx.expr());
@@ -197,7 +259,6 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
         }
         return null;
     }
-
 
     @Override public Integer visitIntnegativo(LenguajeDeProgramacionParser.IntnegativoContext ctx) {
         return Integer.valueOf("-"+ctx.INT().getText()); }

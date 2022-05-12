@@ -17,6 +17,13 @@ public interface LenguajeCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrograma(LenguajeCParser.ProgramaContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code encabezadoclase}
+	 * labeled alternative in {@link LenguajeCParser#clase}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEncabezadoclase(LenguajeCParser.EncabezadoclaseContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code iniciar}
 	 * labeled alternative in {@link LenguajeCParser#inicio}.
 	 * @param ctx the parse tree
@@ -30,6 +37,13 @@ public interface LenguajeCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFinalizar(LenguajeCParser.FinalizarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code finalizarclase}
+	 * labeled alternative in {@link LenguajeCParser#finclase}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFinalizarclase(LenguajeCParser.FinalizarclaseContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code encabezar}
 	 * labeled alternative in {@link LenguajeCParser#encabezado}.
@@ -64,6 +78,20 @@ public interface LenguajeCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitImpresion(LenguajeCParser.ImpresionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code imprimirexpr}
+	 * labeled alternative in {@link LenguajeCParser#impresiones}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImprimirexpr(LenguajeCParser.ImprimirexprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code imprimirstring}
+	 * labeled alternative in {@link LenguajeCParser#impresiones}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImprimirstring(LenguajeCParser.ImprimirstringContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code asignacion}
 	 * labeled alternative in {@link LenguajeCParser#asignar}.
@@ -155,6 +183,20 @@ public interface LenguajeCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParentesis(LenguajeCParser.ParentesisContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code incrementar}
+	 * labeled alternative in {@link LenguajeCParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIncrementar(LenguajeCParser.IncrementarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code decrementar}
+	 * labeled alternative in {@link LenguajeCParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecrementar(LenguajeCParser.DecrementarContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code expresion}
 	 * labeled alternative in {@link LenguajeCParser#expr}.

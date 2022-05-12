@@ -43,7 +43,7 @@ public class MyVerificador extends LenguajeDeProgramacionBaseVisitor {
     }
 
     @Override public Object visitImpresion(LenguajeDeProgramacionParser.ImpresionContext ctx) {
-        visit(ctx.expr());
+        visit(ctx.impresiones());
         return null;
     }
 

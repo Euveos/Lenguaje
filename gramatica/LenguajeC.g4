@@ -1,12 +1,16 @@
 grammar LenguajeC;
 
-programa: encabezado inicio contenido fin;
+programa: clase inicio encabezado inicio contenido fin finclase;
+
+clase: PUBLIC CLASS ID              #encabezadoclase;
 
 inicio: LLA                         #iniciar;
 
 fin: LLC                            #finalizar;
 
-encabezado: VOID MAIN PA PC         #encabezar;
+finclase: LLC                       #finalizarclase;
+
+encabezado: PUBLIC VOID MAIN PA PC         #encabezar;
 
 contenido: (declarar|imprimir|asignar|declararasignar|condicional|mientras)*;
 
@@ -14,7 +18,12 @@ declarar: ENTERO ID SEMI            #declaracion;
 
 declararasignar: ENTERO ID IGUAL expr SEMI  #declasignar;
 
-imprimir: IMPRIMIR PA expr? PC SEMI   #impresion;
+imprimir: IMPRIMIR PA impresiones? PC SEMI   #impresion;
+
+impresiones:
+            expr                            #imprimirexpr
+            |
+            STRING                          #imprimirstring;
 
 asignar: ID IGUAL expr SEMI                 #asignacion;
 
@@ -46,6 +55,10 @@ expr:
     |
     RES INT                         #intnegativo
     |
+    ID '+' '+'                      #incrementar
+    |
+    ID '-' '-'                      #decrementar
+    |
     INT                             #int
     |
     ID                              #id
@@ -53,9 +66,10 @@ expr:
     '(' expr ')'                    #parentesis
     ;
 
-
 mientras: WHILE '(' condicion ')' '{' contenido '}'    #ciclowhile;
 
+PUBLIC: 'public';
+CLASS: 'class';
 VOID: 'void';
 MAIN: 'main';
 PA: '(';
@@ -90,6 +104,7 @@ RES: '-';
 MUL: '*';
 DIV: '/';
 
+STRING : '"' ( '\\"' | . )*? '"' ;
 ESPACIOS: [ \t\r\n]->skip;
 LINEA: '/''/'~[\r\n]* -> skip;
 BLOQUE: '/''*'.*?'*''/' -> skip;

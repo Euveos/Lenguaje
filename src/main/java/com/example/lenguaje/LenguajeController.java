@@ -14,7 +14,9 @@ import org.fxmisc.richtext.LineNumberFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -22,6 +24,7 @@ public class LenguajeController implements Initializable {
 
     private static String salida="";
     private static String traduccion="";
+    private static String nombreClase;
 
     @FXML
     private MenuBar barraMenu;
@@ -129,6 +132,15 @@ public class LenguajeController implements Initializable {
 
             MyVisitor visita = new MyVisitor();
             visita.visit(arbol);
+
+            //GENERACION DE ARCHIVOS
+            File miArchivo = new File("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos\\"+nombreClase+".j");
+            FileWriter escritor = new FileWriter("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos\\"+nombreClase+".j");
+            escritor.write(salida);
+            escritor.close();
+
+            //txtAreaSalida.setText(salida);
+            salida="";
         } catch(ArithmeticException ar){
             txtAreaSalida.setText("Error: División entre 0 detectada.\nIngrese una operación válida.");
             salida="";
@@ -143,12 +155,11 @@ public class LenguajeController implements Initializable {
             salida="";
             return;
         }
-        txtAreaSalida.setText(salida);
-        salida="";
     }
 
     @FXML
     void traducir(){
+        txtAreaSalida.clear();
         try {
             CharStream input = CharStreams.fromString(txtAreaEntrada.getText());
             LenguajeCLexer lexico = new LenguajeCLexer(input);
@@ -198,8 +209,16 @@ public class LenguajeController implements Initializable {
         traduccion=texto;
     }
 
+    void setSalida(String texto){
+        salida=texto;
+    }
+
     void concatenar(String resultado){
         salida=salida+resultado+"\n";
+    }
+
+    void setNombreClase(String nombre){
+        nombreClase=nombre;
     }
 
     @Override

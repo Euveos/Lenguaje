@@ -1,14 +1,25 @@
 grammar LenguajeDeProgramacion;
 
-programa: encabezado VIVE contenido MUERE;
+programa: clase encabezado contenido cierremetodo cierreclase;
 
-encabezado: tipodereturn REY DP DP;
+clase: PUEBLO CASTILLO ID VIVE       #encabezadoclase;
+
+encabezado: PUEBLO tipodereturn REY DP DP VIVE;
+
+cierremetodo: MUERE         #cerrarmetodo;
+
+cierreclase: MUERE          #cerrarclase;
 
 tipodereturn: VOID;
 
 contenido:  (imprimir|declarar|asignar|declararasignar|condicional|mientras)*;
 
-imprimir: INVOCACION expr? FIN #impresion;
+imprimir: INVOCACION ':'impresiones?':' FIN #impresion;
+
+impresiones:
+            expr                            #imprimirexpr
+            |
+            STRING                          #imprimirstring;
 
 declarar: tipodato ID FIN #declaracion;
 
@@ -49,6 +60,10 @@ expr:
     |
     RES INT                         #intnegativo
     |
+    ID '+' '+'                      #incrementar
+    |
+    ID '-' '-'                      #decrementar
+    |
     INT                             #int
     |
     ID                              #id
@@ -59,6 +74,9 @@ expr:
 mientras: HECHIZO ':' condicion ':' '[' contenido ']'    #ciclomientras;
 
 VOID: 'verdugo';
+PUEBLO: 'pueblo';
+CASTILLO: 'castillo';
+MUNDO: 'mundo';
 REY: 'rey';
 VIVE: '[';
 MUERE: ']';
@@ -88,6 +106,7 @@ RES: '-';
 MUL: '*';
 DIV: '/';
 
+STRING : '"' ( '\\"' | . )*? '"' ;
 ESPACIOS: [ \t\r\n]->skip;
 LINEA: '$''$'~[\r\n]* -> skip;
 BLOQUE: '%''%'.*?'%''%' -> skip;
