@@ -4,6 +4,7 @@ import eugenio.parser.LenguajeCParser;
 import eugenio.parser.LenguajeDeProgramacionBaseVisitor;
 import eugenio.parser.LenguajeDeProgramacionParser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static eugenio.parser.LenguajeCLexer.*;
@@ -11,6 +12,7 @@ import static eugenio.parser.LenguajeCLexer.*;
 public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
 
     Nodo memoria = new Nodo(null);
+    ArrayList<String> posiciones = new ArrayList<String>();
 
     public String nombreClase;
     public String traduccion="";
@@ -49,17 +51,23 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
             throw new NullPointerException("Variable anteriormente declarada: "+id+". Linea: "+linea+".");
         }
         memoria.datos.put(id,null);
+        posiciones.add(id);
         return 0;
     }
 
     @Override public Integer visitAsignacion(LenguajeDeProgramacionParser.AsignacionContext ctx) {
         String id = ctx.ID().getText();
         int linea = ctx.ID().getSymbol().getLine();
+
         int valor=(int)visit(ctx.expr());
+
         if(!memoria.existe(id)){
             throw new NullPointerException("Variable \""+id+"\" no declarada. Linea: "+linea+".");
         }
         memoria.ingresar(id,valor);
+
+        traduccion+="istore_"+posiciones.indexOf(id)+
+                System.lineSeparator();
         return valor;
     }
 
@@ -72,27 +80,36 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
             throw new NullPointerException("Variable \""+id+"\" anteriormente declarada. Linea: "+linea+".");
         }
         memoria.datos.put(id,valor);
+        posiciones.add(id);
+
+        traduccion+="istore_"+posiciones.indexOf(id)+
+                System.lineSeparator();
         return valor;
     }
 
 
     @Override public Integer visitImpresion(LenguajeDeProgramacionParser.ImpresionContext ctx) {
-        String valor = visit(ctx.impresiones()).toString();
-        LenguajeController controller = new LenguajeController();
-        controller.concatenar(valor.toString());
+        traduccion+="getstatic java/lang/System/out Ljava/io/PrintStream;"+ System.lineSeparator();
+        visit(ctx.impresiones());
         return 0;
     }
 
     @Override public Integer visitImprimirexpr(LenguajeDeProgramacionParser.ImprimirexprContext ctx) {
-        int expresion = (int)visit(ctx.expr());
-        return expresion; }
+        visit(ctx.expr());
+        traduccion+= "invokevirtual java/io/PrintStream/println(I)V"+System.lineSeparator();
+        return null; }
 
     @Override public String visitImprimirstring(LenguajeDeProgramacionParser.ImprimirstringContext ctx) {
-        return ctx.STRING().getText(); }
+        traduccion+="ldc "+ctx.STRING().getText()+System.lineSeparator()+
+                "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V"+
+                        System.lineSeparator();
+        return null; }
 
 
     @Override public Integer visitInt(LenguajeDeProgramacionParser.IntContext ctx) {
-        return Integer.valueOf(ctx.INT().getText());
+        int valor= Integer.valueOf(ctx.INT().getText());
+        traduccion+="bipush "+valor+System.lineSeparator();
+        return valor;
     }
 
     @Override public Integer visitId(LenguajeDeProgramacionParser.IdContext ctx) {
@@ -100,6 +117,7 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
         int linea = ctx.ID().getSymbol().getLine();
         if (memoria.existe(id)) {
             if(memoria.obtener(id)!=null) {
+                traduccion+="iload_"+posiciones.indexOf(id)+System.lineSeparator();
                 return memoria.obtener(id);
             }
             else{
@@ -114,19 +132,24 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
         Integer izq=(int)visit(ctx.expr(0));
         Integer der=(int)visit(ctx.expr(1));
         if (ctx.op.getType()==LenguajeDeProgramacionParser.SUM){
+            traduccion+= "iadd"+System.lineSeparator();
             return izq+der;
         }
         else {
+            traduccion+= "isub"+System.lineSeparator();
             return izq-der;
         }
     }
+
     @Override public Integer visitMulDiv(LenguajeDeProgramacionParser.MulDivContext ctx) {
         Integer izq=(int)visit(ctx.expr(0));
         Integer der=(int)visit(ctx.expr(1));
         if (ctx.op.getType()==LenguajeDeProgramacionParser.MUL){
+            traduccion+= "imul"+System.lineSeparator();
             return izq*der;
         }
         else {
+            traduccion+= "idiv"+System.lineSeparator();
             return izq/der;
         }
     }
@@ -153,27 +176,30 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
         return null;
     }
 
-
-
     @Override public Integer visitParentesis(LenguajeDeProgramacionParser.ParentesisContext ctx) {
         return (int)visit(ctx.expr());
     }
 
     @Override public Integer visitCondicionales(LenguajeDeProgramacionParser.CondicionalesContext ctx) {
         memoria = new Nodo (memoria);
-        if((boolean)visit(ctx.condicion()) ){
-            visit(ctx.contenido());
+
+        visit(ctx.condicion());
+
+        if(ctx.sino()!=null){
+        visit(ctx.sino());
         }
+        /*
         else{
-            if(ctx.sino()!=null){
-                visit(ctx.sino());
-            }
-            else{
-                if (ctx.sinoentonces()!=null){
+            if (ctx.sinoentonces()!=null){
                     visit(ctx.sinoentonces());
                 }
             }
-        }
+        */
+        traduccion+="goto Continuacion"+System.lineSeparator();
+        traduccion+="Contenido: "+System.lineSeparator();
+        visit(ctx.contenido());
+        traduccion+="Continuacion: "+System.lineSeparator();
+
         memoria = memoria.anterior;
         return 0;
     }
@@ -183,7 +209,6 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
     }
     @Override public Boolean visitIntnegcondicion(LenguajeDeProgramacionParser.IntnegcondicionContext ctx) {
         return Integer.parseInt("-"+ctx.INT().getText()) != 0; }
-
 
     @Override public Boolean visitFalso(LenguajeDeProgramacionParser.FalsoContext ctx) {
         return false;
@@ -196,21 +221,27 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
     }
 
     @Override public Boolean visitCondiciones(LenguajeDeProgramacionParser.CondicionesContext ctx) {
-        int izq = (int)visit(ctx.expr(0));
-        int der = (int)visit(ctx.expr(1));
+        visit(ctx.expr(0));
+        visit(ctx.expr(1));
         switch(ctx.ol.getType()){
             case LenguajeDeProgramacionParser.MAY:
-                return izq>der;
+                traduccion+="if_icmpgt Contenido" + System.lineSeparator();
+                return null;//izq>der;
             case LenguajeDeProgramacionParser.MEN:
-                return izq<der;
+                traduccion+="if_icmplt Contenido" + System.lineSeparator();
+                return null;//izq<der;
             case LenguajeDeProgramacionParser.IGU:
-                return izq==der;
+                traduccion+="if_icmpeq Contenido" + System.lineSeparator();
+                return null;//izq==der;
             case LenguajeDeProgramacionParser.DIF:
-                return izq!=der;
+                traduccion+="if_icmpne Contenido" + System.lineSeparator();
+                return null;//izq!=der;
             case LenguajeDeProgramacionParser.MAYIGU:
-                return izq>=der;
+                traduccion+="if_icmpge Contenido" + System.lineSeparator();
+                return null;//izq>=der;
             case LenguajeDeProgramacionParser.MENIGU:
-                return izq<=der;
+                traduccion+="if_icmple Contenido" + System.lineSeparator();
+                return null;//izq<=der;
         }
         return false;
     }

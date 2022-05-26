@@ -12,9 +12,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.*;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -138,6 +136,17 @@ public class LenguajeController implements Initializable {
             FileWriter escritor = new FileWriter("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos\\"+nombreClase+".j");
             escritor.write(salida);
             escritor.close();
+
+            Process proceso1 = Runtime.getRuntime().exec("Java -jar jasmin.jar "+nombreClase+".j",null, new File("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos"));
+            proceso1.waitFor();
+            Process proceso2 = Runtime.getRuntime().exec("Java "+nombreClase,null,new File("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos"));
+            BufferedReader lector = new BufferedReader(new InputStreamReader(proceso2.getInputStream()));
+            String lectura = "";
+            while((lectura=lector.readLine())!=null){
+                txtAreaSalida.appendText(lectura+System.lineSeparator());
+            }
+            proceso1.destroy();
+            proceso2.destroy();
 
             //txtAreaSalida.setText(salida);
             salida="";
