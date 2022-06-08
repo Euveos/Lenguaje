@@ -6,14 +6,17 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class Principal extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Principal.class.getResource("lenguaje.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1052, 701);
-        stage.getIcons().add(new Image("C:/Users/eugen/IdeaProjects/Lenguaje/src/main/resources/imagenes/Corona.png"));
+        stage.getIcons().add(new Image(Principal.class.getResource("/imagenes/Corona.png").toString()));
         stage.setTitle("Lenguaje de Programación");
         stage.setScene(scene);
         stage.show();

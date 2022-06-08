@@ -132,14 +132,14 @@ public class LenguajeController implements Initializable {
             visita.visit(arbol);
 
             //GENERACION DE ARCHIVOS
-            File miArchivo = new File("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos\\"+nombreClase+".j");
-            FileWriter escritor = new FileWriter("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos\\"+nombreClase+".j");
+            File miArchivo = new File(nombreClase+".j");
+            FileWriter escritor = new FileWriter(nombreClase+".j");
             escritor.write(salida);
             escritor.close();
 
-            Process proceso1 = Runtime.getRuntime().exec("Java -jar jasmin.jar "+nombreClase+".j",null, new File("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos"));
+            Process proceso1 = Runtime.getRuntime().exec("Java -jar jasmin.jar "+nombreClase+".j",null, new File("\\"));
             proceso1.waitFor();
-            Process proceso2 = Runtime.getRuntime().exec("Java "+nombreClase,null,new File("C:\\Users\\eugen\\IdeaProjects\\Lenguaje\\src\\main\\resources\\Archivos"));
+            Process proceso2 = Runtime.getRuntime().exec("Java "+nombreClase,null,new File("\\"));
             BufferedReader lector = new BufferedReader(new InputStreamReader(proceso2.getInputStream()));
             String lectura = "";
             while((lectura=lector.readLine())!=null){
