@@ -16,23 +16,25 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
 
     public String nombreClase;
     public String traduccion="";
+    public int ifs=0;
+    public int cic=0;
 
     @Override public String visitEncabezadoclase(LenguajeDeProgramacionParser.EncabezadoclaseContext ctx) {
         nombreClase=ctx.ID().getText();
-        traduccion+=".class public "+nombreClase+"\n" +
-                ".super java/lang/Object\n";
+        traduccion+=".class public "+nombreClase+System.lineSeparator() +
+                ".super java/lang/Object"+System.lineSeparator();
         return null;
     }
 
     @Override public String visitEncabezado(LenguajeDeProgramacionParser.EncabezadoContext ctx) {
-        traduccion+=".method public static main([Ljava/lang/String;)V\n" +
-                "\t.limit stack 10\n" +
-                "\t.limit locals 10\n";
+        traduccion+=".method public static main([Ljava/lang/String;)V"+System.lineSeparator() +
+                "\t.limit stack 10"+System.lineSeparator() +
+                "\t.limit locals 10"+System.lineSeparator();
         return null;
     }
 
     @Override public String visitCerrarmetodo(LenguajeDeProgramacionParser.CerrarmetodoContext ctx) {
-        traduccion+="return\n";
+        traduccion+="return"+System.lineSeparator();
         traduccion+=".end method";
         return null;
     }
@@ -181,10 +183,11 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
     }
 
     @Override public Integer visitCondicionales(LenguajeDeProgramacionParser.CondicionalesContext ctx) {
+        ifs++;
         memoria = new Nodo (memoria);
 
         visit(ctx.condicion());
-
+        traduccion+="If"+ifs  + System.lineSeparator();
         if(ctx.sino()!=null){
         visit(ctx.sino());
         }
@@ -195,11 +198,10 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
                 }
             }
         */
-        traduccion+="goto Continuacion"+System.lineSeparator();
-        traduccion+="Contenido: "+System.lineSeparator();
+        traduccion+="goto ContinuacionIf"+ifs +System.lineSeparator();
+        traduccion+="ContenidoIf"+ifs+": "+System.lineSeparator();
         visit(ctx.contenido());
-        traduccion+="Continuacion: "+System.lineSeparator();
-
+        traduccion+="ContinuacionIf"+ifs+": "+System.lineSeparator();
         memoria = memoria.anterior;
         return 0;
     }
@@ -225,22 +227,22 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
         visit(ctx.expr(1));
         switch(ctx.ol.getType()){
             case LenguajeDeProgramacionParser.MAY:
-                traduccion+="if_icmpgt Contenido" + System.lineSeparator();
+                traduccion+="if_icmpgt Contenido";
                 return null;//izq>der;
             case LenguajeDeProgramacionParser.MEN:
-                traduccion+="if_icmplt Contenido" + System.lineSeparator();
+                traduccion+="if_icmplt Contenido";
                 return null;//izq<der;
             case LenguajeDeProgramacionParser.IGU:
-                traduccion+="if_icmpeq Contenido" + System.lineSeparator();
+                traduccion+="if_icmpeq Contenido";
                 return null;//izq==der;
             case LenguajeDeProgramacionParser.DIF:
-                traduccion+="if_icmpne Contenido" + System.lineSeparator();
+                traduccion+="if_icmpne Contenido";
                 return null;//izq!=der;
             case LenguajeDeProgramacionParser.MAYIGU:
-                traduccion+="if_icmpge Contenido" + System.lineSeparator();
+                traduccion+="if_icmpge Contenido";
                 return null;//izq>=der;
             case LenguajeDeProgramacionParser.MENIGU:
-                traduccion+="if_icmple Contenido" + System.lineSeparator();
+                traduccion+="if_icmple Contenido";
                 return null;//izq<=der;
         }
         return false;
@@ -283,11 +285,18 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
     }
 
     @Override public Integer visitCiclomientras(LenguajeDeProgramacionParser.CiclomientrasContext ctx) {
-        while((boolean)visit(ctx.condicion())){
+            cic++;
+            traduccion+="CicloCic"+cic+": "+System.lineSeparator();
+            visit(ctx.condicion());
+            traduccion+="Cic"+cic  + System.lineSeparator();
+            traduccion+="goto ContinuacionCic"+cic+System.lineSeparator();
+            traduccion+="ContenidoCic"+cic+": "+System.lineSeparator();
             memoria = new Nodo (memoria);
+
             visit(ctx.contenido());
+            traduccion+="goto CicloCic"+cic+System.lineSeparator();
             memoria = memoria.anterior;
-        }
+            traduccion+="ContinuacionCic"+cic+": "+System.lineSeparator();
         return null;
     }
 

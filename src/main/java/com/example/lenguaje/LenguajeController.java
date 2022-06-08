@@ -85,7 +85,7 @@ public class LenguajeController implements Initializable {
             try{
                 Scanner input = new Scanner(new File(archivo.getAbsolutePath()));
                 while (input.hasNext()){
-                    txtAreaEntrada.appendText(input.nextLine()+'\n');
+                    txtAreaEntrada.appendText(input.nextLine()+System.lineSeparator());
                 }
                 input.close();
             }
@@ -151,7 +151,7 @@ public class LenguajeController implements Initializable {
             //txtAreaSalida.setText(salida);
             salida="";
         } catch(ArithmeticException ar){
-            txtAreaSalida.setText("Error: División entre 0 detectada.\nIngrese una operación válida.");
+            txtAreaSalida.setText("Error: División entre 0 detectada."+System.lineSeparator()+"Ingrese una operación válida.");
             salida="";
             return;
         }
@@ -191,7 +191,7 @@ public class LenguajeController implements Initializable {
             visita.visit(arbol);
         }
         catch(ArithmeticException ar){
-            txtAreaSalida.setText("Error: División entre 0 detectada.\nIngrese una operación válida.");
+            txtAreaSalida.setText("Error: División entre 0 detectada."+System.lineSeparator()+"Ingrese una operación válida.");
             salida="";
             return;
         }
@@ -223,7 +223,7 @@ public class LenguajeController implements Initializable {
     }
 
     void concatenar(String resultado){
-        salida=salida+resultado+"\n";
+        salida=salida+resultado+System.lineSeparator();
     }
 
     void setNombreClase(String nombre){

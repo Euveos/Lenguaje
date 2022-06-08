@@ -16,7 +16,7 @@ public class MyCLanguageVisitor extends LenguajeCBaseVisitor<String> {
         return null;
     }
     @Override public String visitIniciar(LenguajeCParser.IniciarContext ctx) {
-        traduccion+="[\n";
+        traduccion+="["+System.lineSeparator();
         return null;
     }
 
@@ -26,7 +26,7 @@ public class MyCLanguageVisitor extends LenguajeCBaseVisitor<String> {
     }
 
     @Override public String visitFinalizarclase(LenguajeCParser.FinalizarclaseContext ctx) {
-        traduccion+="\n]";
+        traduccion+=System.lineSeparator()+"]";
         LenguajeController controller = new LenguajeController();
         controller.setTraduccion(traduccion);
         return null;
@@ -34,19 +34,19 @@ public class MyCLanguageVisitor extends LenguajeCBaseVisitor<String> {
 
 
     @Override public String visitDeclaracion(LenguajeCParser.DeclaracionContext ctx) {
-        traduccion+="subdito "+ctx.ID().getText()+"!\n";
+        traduccion+="subdito "+ctx.ID().getText()+"!"+System.lineSeparator();
         return null;
     }
 
     @Override public String visitDeclasignar(LenguajeCParser.DeclasignarContext ctx) {
-        traduccion+="subdito "+ctx.ID().getText()+" = "+visit(ctx.expr())+"!\n";
+        traduccion+="subdito "+ctx.ID().getText()+" = "+visit(ctx.expr())+"!"+System.lineSeparator();
         return null;
     }
 
 
     @Override public String visitImpresion(LenguajeCParser.ImpresionContext ctx) {
         String expresion = visit(ctx.impresiones());
-        traduccion+="invocacion :"+expresion+":!\n";
+        traduccion+="invocacion :"+expresion+":!"+System.lineSeparator();
         return null;
     }
 
@@ -61,7 +61,7 @@ public class MyCLanguageVisitor extends LenguajeCBaseVisitor<String> {
     }
 
     @Override public String visitAsignacion(LenguajeCParser.AsignacionContext ctx) {
-        traduccion+=ctx.ID().getText()+" = "+visit(ctx.expr())+"!\n";
+        traduccion+=ctx.ID().getText()+" = "+visit(ctx.expr())+"!"+System.lineSeparator();
         return null;
     }
 
@@ -96,9 +96,9 @@ public class MyCLanguageVisitor extends LenguajeCBaseVisitor<String> {
     }
 
     @Override public String visitCondicionales(LenguajeCParser.CondicionalesContext ctx) {
-        traduccion+="juicio:"+visit(ctx.condicion())+":[\n";
+        traduccion+="juicio:"+visit(ctx.condicion())+":["+System.lineSeparator();
         visit(ctx.contenido());
-        traduccion+="]\n";
+        traduccion+="]"+System.lineSeparator();
         if(ctx.sino()!=null){
             visit(ctx.sino());
         }
@@ -141,15 +141,15 @@ public class MyCLanguageVisitor extends LenguajeCBaseVisitor<String> {
         return izq+" || "+der;
     }
     @Override public String visitPlanb(LenguajeCParser.PlanbContext ctx) {
-        traduccion+="ejecucion[\n";
+        traduccion+="ejecucion["+System.lineSeparator();
         visit(ctx.contenido());
-        traduccion+="]\n";
+        traduccion+="]"+System.lineSeparator();
         return null;
     }
     @Override public String visitSinoentonce(LenguajeCParser.SinoentonceContext ctx) {
-        traduccion+="sentencia:"+visit(ctx.condicion())+":[\n";
+        traduccion+="sentencia:"+visit(ctx.condicion())+":["+System.lineSeparator();
         visit(ctx.contenido());
-        traduccion+="]\n";
+        traduccion+="]"+System.lineSeparator();
         if(ctx.sino()!=null){
             visit(ctx.sino());
         }
@@ -162,9 +162,9 @@ public class MyCLanguageVisitor extends LenguajeCBaseVisitor<String> {
     }
 
     @Override public String visitCiclowhile(LenguajeCParser.CiclowhileContext ctx) {
-        traduccion+="hechizo:"+visit(ctx.condicion())+":[\n";
+        traduccion+="hechizo:"+visit(ctx.condicion())+":["+System.lineSeparator();
         visit(ctx.contenido());
-        traduccion+="]\n";
+        traduccion+="]"+System.lineSeparator();
         return null;
     }
 
