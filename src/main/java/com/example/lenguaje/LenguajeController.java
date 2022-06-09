@@ -107,7 +107,7 @@ public class LenguajeController implements Initializable {
 
     @FXML
     void ejecutarGramatica(ActionEvent event) {
-
+        txtAreaSalida.clear();
         try {
             CharStream input = CharStreams.fromString(txtAreaTraduccion.getText());
             LenguajeDeProgramacionLexer lexico = new LenguajeDeProgramacionLexer(input);
@@ -137,9 +137,9 @@ public class LenguajeController implements Initializable {
             escritor.write(salida);
             escritor.close();
 
-            Process proceso1 = Runtime.getRuntime().exec("Java -jar jasmin.jar "+nombreClase+".j",null, new File("\\"));
+            Process proceso1 = Runtime.getRuntime().exec("Java -jar jasmin.jar "+nombreClase+".j");
             proceso1.waitFor();
-            Process proceso2 = Runtime.getRuntime().exec("Java "+nombreClase,null,new File("\\"));
+            Process proceso2 = Runtime.getRuntime().exec("Java "+nombreClase);
             BufferedReader lector = new BufferedReader(new InputStreamReader(proceso2.getInputStream()));
             String lectura = "";
             while((lectura=lector.readLine())!=null){

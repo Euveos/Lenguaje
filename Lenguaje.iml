@@ -10,31 +10,31 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="antlr-4.9.3-complete" level="application" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-web:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-web:win:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-media:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-media:win:17.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:11.1.0" level="project" />
-    <orderEntry type="library" name="Maven: com.dlsc.formsfx:formsfx-core:11.3.2" level="project" />
-    <orderEntry type="library" name="Maven: net.synedra:validatorfx:0.1.13" level="project" />
-    <orderEntry type="library" name="Maven: eu.hansolo:tilesfx:11.48" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.8.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.8.1" level="project" />
-    <orderEntry type="library" name="richtextfx-fat-0.10.9" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="library" exported="" name="antlr-4.9.3-complete" level="application" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-controls:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-controls:win:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-graphics:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-graphics:win:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-base:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-base:win:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-fxml:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-fxml:win:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-web:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-web:win:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-media:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.openjfx:javafx-media:win:17.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.controlsfx:controlsfx:11.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.dlsc.formsfx:formsfx-core:11.3.2" level="project" />
+    <orderEntry type="library" exported="" name="Maven: net.synedra:validatorfx:0.1.13" level="project" />
+    <orderEntry type="library" exported="" name="Maven: eu.hansolo:tilesfx:11.48" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.8.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.8.1" level="project" />
+    <orderEntry type="library" exported="" name="richtextfx-fat-0.10.9" level="project" />
+    <orderEntry type="module-library" exported="">
       <library name="JsTypeDef-Std-Lib" type="Objective-J Library">
         <CLASSES />
         <JAVADOC />
@@ -49,7 +49,19 @@
           <root url="jar://$APPLICATION_PLUGINS_DIR$/Objective-J/lib/Objective-J-2021.08.21.jar!/definitions/jstypedef" />
           <root url="jar://$APPLICATION_PLUGINS_DIR$/Objective-J/lib/Objective-J-2021.08.21.jar!/definitions/jstypedef" />
           <root url="jar://$APPLICATION_PLUGINS_DIR$/Objective-J/lib/Objective-J-2021.08.21.jar!/definitions/jstypedef" />
+          <root url="jar://$APPLICATION_PLUGINS_DIR$/Objective-J/lib/Objective-J-2021.08.21.jar!/definitions/jstypedef" />
         </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="javafx" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/lib" recursive="false" />
       </library>
     </orderEntry>
   </component>

@@ -60,14 +60,11 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
     @Override public Integer visitAsignacion(LenguajeDeProgramacionParser.AsignacionContext ctx) {
         String id = ctx.ID().getText();
         int linea = ctx.ID().getSymbol().getLine();
-
         int valor=(int)visit(ctx.expr());
-
         if(!memoria.existe(id)){
             throw new NullPointerException("Variable \""+id+"\" no declarada. Linea: "+linea+".");
         }
         memoria.ingresar(id,valor);
-
         traduccion+="istore_"+posiciones.indexOf(id)+
                 System.lineSeparator();
         return valor;
@@ -83,7 +80,6 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
         }
         memoria.datos.put(id,valor);
         posiciones.add(id);
-
         traduccion+="istore_"+posiciones.indexOf(id)+
                 System.lineSeparator();
         return valor;
@@ -185,19 +181,9 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
     @Override public Integer visitCondicionales(LenguajeDeProgramacionParser.CondicionalesContext ctx) {
         ifs++;
         memoria = new Nodo (memoria);
-
         visit(ctx.condicion());
         traduccion+="If"+ifs  + System.lineSeparator();
-        if(ctx.sino()!=null){
-        visit(ctx.sino());
-        }
-        /*
-        else{
-            if (ctx.sinoentonces()!=null){
-                    visit(ctx.sinoentonces());
-                }
-            }
-        */
+        if(ctx.sino()!=null){visit(ctx.sino());}
         traduccion+="goto ContinuacionIf"+ifs +System.lineSeparator();
         traduccion+="ContenidoIf"+ifs+": "+System.lineSeparator();
         visit(ctx.contenido());
@@ -292,7 +278,6 @@ public class MyVisitor extends LenguajeDeProgramacionBaseVisitor {
             traduccion+="goto ContinuacionCic"+cic+System.lineSeparator();
             traduccion+="ContenidoCic"+cic+": "+System.lineSeparator();
             memoria = new Nodo (memoria);
-
             visit(ctx.contenido());
             traduccion+="goto CicloCic"+cic+System.lineSeparator();
             memoria = memoria.anterior;
